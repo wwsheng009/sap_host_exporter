@@ -45,7 +45,7 @@ jobs:
         for FILE in build/bin/*; do
           gzip $FILE
         done
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: sap_host_exporter
         path: build/bin
