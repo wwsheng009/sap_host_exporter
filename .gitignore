@@ -16,3 +16,4 @@ sap_host_exporter
 
 # build artifacts
 /build
+sap_host_exporter.yaml

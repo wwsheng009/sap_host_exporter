@@ -29,6 +29,9 @@ type WebService interface {
 
 	/* Custom method to get the current instance data. This is not something natively exposed by the webservice. */
 	GetCurrentInstance() (*CurrentSapInstance, error)
+
+	/* Returns a list of the ABAP work processes (similar to SM50 transaction). */
+	GetABAPWPTable() (*GetABAPWPTableResponse, error)
 }
 
 type STATECOLOR string
@@ -152,6 +155,52 @@ type TaskHandlerQueue struct {
 	Reads  int32  `xml:"Reads,omitempty" json:"Reads,omitempty"`
 }
 
+type GetABAPWPTable struct {
+	XMLName xml.Name `xml:"urn:SAPControl ABAPGetWPTable"`
+}
+
+type GetABAPWPTableResponse struct {
+	XMLName xml.Name `xml:"urn:SAPControl ABAPGetWPTableResponse"`
+
+	Workprocess *ArrayOfWorkProcess `xml:"workprocess,omitempty" json:"workprocess,omitempty"`
+}
+
+type ArrayOfWorkProcess struct {
+	Item []*WorkProcess `xml:"item,omitempty" json:"item,omitempty"`
+}
+
+
+type WorkProcess struct {
+	No int32 `xml:"No,omitempty" json:"No,omitempty"`
+
+	Typ string `xml:"Typ,omitempty" json:"Typ,omitempty"`
+
+	Pid int32 `xml:"Pid,omitempty" json:"Pid,omitempty"`
+
+	Status string `xml:"Status,omitempty" json:"Status,omitempty"`
+
+	Reason string `xml:"Reason,omitempty" json:"Reason,omitempty"`
+
+	Start string `xml:"Start,omitempty" json:"Start,omitempty"`
+
+	Err string `xml:"Err,omitempty" json:"Err,omitempty"`
+
+	Sem string `xml:"Sem,omitempty" json:"Sem,omitempty"`
+
+	Cpu string `xml:"Cpu,omitempty" json:"Cpu,omitempty"`
+
+	Time string `xml:"Time,omitempty" json:"Time,omitempty"`
+
+	Program string `xml:"Program,omitempty" json:"Program,omitempty"`
+
+	Client string `xml:"Client,omitempty" json:"Client,omitempty"`
+
+	User string `xml:"User,omitempty" json:"User,omitempty"`
+
+	Action string `xml:"Action,omitempty" json:"Action,omitempty"`
+
+	Table string `xml:"Table,omitempty" json:"Table,omitempty"`
+}
 type webService struct {
 	client             *soap.Client
 	once               *sync.Once
@@ -218,6 +267,18 @@ func (s *webService) EnqGetStatistic() (*EnqGetStatisticResponse, error) {
 func (s *webService) GetQueueStatistic() (*GetQueueStatisticResponse, error) {
 	request := &GetQueueStatistic{}
 	response := &GetQueueStatisticResponse{}
+	err := s.client.Call("''", request, response)
+	if err != nil {
+		return nil, err
+	}
+
+	return response, nil
+}
+
+
+func (s *webService) GetABAPWPTable() (*GetABAPWPTableResponse, error) {
+	request := &GetABAPWPTable{}
+	response := &GetABAPWPTableResponse{}
 	err := s.client.Call("''", request, response)
 	if err != nil {
 		return nil, err
