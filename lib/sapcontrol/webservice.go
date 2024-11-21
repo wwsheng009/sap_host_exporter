@@ -169,7 +169,6 @@ type ArrayOfWorkProcess struct {
 	Item []*WorkProcess `xml:"item,omitempty" json:"item,omitempty"`
 }
 
-
 type WorkProcess struct {
 	No int32 `xml:"No,omitempty" json:"No,omitempty"`
 
@@ -274,7 +273,6 @@ func (s *webService) GetQueueStatistic() (*GetQueueStatisticResponse, error) {
 
 	return response, nil
 }
-
 
 func (s *webService) GetABAPWPTable() (*GetABAPWPTableResponse, error) {
 	request := &GetABAPWPTable{}

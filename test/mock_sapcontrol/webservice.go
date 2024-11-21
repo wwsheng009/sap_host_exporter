@@ -124,7 +124,7 @@ func (mr *MockWebServiceMockRecorder) GetSystemInstanceList() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSystemInstanceList", reflect.TypeOf((*MockWebService)(nil).GetSystemInstanceList))
 }
 
-//* Returns a list of the ABAP work processes (similar to SM50 transaction). 
+// * Returns a list of the ABAP work processes (similar to SM50 transaction).
 func (m *MockWebService) GetABAPWPTable() (*sapcontrol.GetABAPWPTableResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetABAPWPTable")
@@ -136,4 +136,3 @@ func (mr *MockWebServiceMockRecorder) GetABAPWPTable() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetABAPWPTable", reflect.TypeOf((*MockWebService)(nil).GetABAPWPTable))
 }
-

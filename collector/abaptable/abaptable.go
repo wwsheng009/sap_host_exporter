@@ -18,12 +18,12 @@ func NewCollector(webService sapcontrol.WebService) (*abaptableServerCollector, 
 		webService,
 	}
 
-	c.SetDescriptor("processes", "The abap work processes started by the SAP Start Service", []string{"no","typ","status", "reason", "start", "err","sem","cpu","pid","program","client","user","action","table","instance_name", "instance_number", "SID", "instance_hostname"})
-	c.SetDescriptor("processes_dia", "The abap dia work processes started by the SAP Start Service", []string{"no","typ","status", "reason", "start", "err","sem","cpu","pid","program","client","user","action","table","instance_name", "instance_number", "SID", "instance_hostname"})
-	c.SetDescriptor("processes_btc", "The abap btc work processes started by the SAP Start Service", []string{"no","typ","status", "reason", "start", "err","sem","cpu","pid","program","client","user","action","table","instance_name", "instance_number", "SID", "instance_hostname"})
-	c.SetDescriptor("processes_spo", "The abap spo work processes started by the SAP Start Service", []string{"no","typ","status", "reason", "start", "err","sem","cpu","pid","program","client","user","action","table","instance_name", "instance_number", "SID", "instance_hostname"})
-	c.SetDescriptor("processes_upd", "The abap upd work processes started by the SAP Start Service", []string{"no","typ","status", "reason", "start", "err","sem","cpu","pid","program","client","user","action","table","instance_name", "instance_number", "SID", "instance_hostname"})
-	c.SetDescriptor("processes_up2", "The abap up2 work processes started by the SAP Start Service", []string{"no","typ","status", "reason", "start", "err","sem","cpu","pid","program","client","user","action","table","instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes", "The abap work processes started by the SAP Start Service", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes_dia", "The abap dia work processes started by the SAP Start Service", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes_btc", "The abap btc work processes started by the SAP Start Service", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes_spo", "The abap spo work processes started by the SAP Start Service", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes_upd", "The abap upd work processes started by the SAP Start Service", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes_up2", "The abap up2 work processes started by the SAP Start Service", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
 	return c, nil
 }
 
@@ -34,7 +34,7 @@ type abaptableServerCollector struct {
 
 func (c *abaptableServerCollector) Collect(ch chan<- prometheus.Metric) {
 	log.Debugln("Collecting ABAPGetWPTable Server metrics")
-	err := c.recordAbapTable(ch);
+	err := c.recordAbapTable(ch)
 	if err != nil {
 		log.Warnf("ABAPGetWPTable Server Collector scrape failed: %s", err)
 	}
@@ -58,11 +58,11 @@ func (c *abaptableServerCollector) recordAbapTable(ch chan<- prometheus.Metric) 
 	}
 
 	for _, process := range abapStatistic.Workprocess.Item {
-		labels := append([]string{strconv.Itoa(int(process.No)),process.Typ,process.Status,process.Reason,process.Start,process.Err,process.Sem,timeToSeconds(process.Cpu),strconv.Itoa(int(process.Pid)),process.Program,process.Client,process.User,process.Action,process.Table}, commonLabels...)
+		labels := append([]string{strconv.Itoa(int(process.No)), process.Typ, process.Status, process.Reason, process.Start, process.Err, process.Sem, timeToSeconds(process.Cpu), strconv.Itoa(int(process.Pid)), process.Program, process.Client, process.User, process.Action, process.Table}, commonLabels...)
 
 		floatValue, err := strconv.ParseFloat(process.Time, 64)
 		if err != nil {
-			
+
 			floatValue = 0
 		}
 		switch process.Typ {
