@@ -12,7 +12,7 @@
             "program": "main.go",
             "args": [
                 "--config",
-                "./sap_host_exporter.yaml"
+                "./build/bin/sap_host_exporter.yaml"
             ]
         }
     ]
