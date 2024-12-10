@@ -41,7 +41,7 @@ func NewCollector(webService sapcontrol.WebService) (*abaptableServerCollector, 
 	c.SetDescriptor("processes_upd", "The abap upd work processes", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
 	c.SetDescriptor("processes_up2", "The abap up2 work processes", []string{"no", "typ", "status", "reason", "start", "err", "sem", "cpu", "pid", "program", "client", "user", "action", "table", "instance_name", "instance_number", "SID", "instance_hostname"})
 	c.SetDescriptor("processes_wait_pct", "The abap dia work processes free percent", []string{"typ", "instance_name", "instance_number", "SID", "instance_hostname"})
-	c.SetDescriptor("processes_simple", "The abap work processes", []string{"no", "typ", "pid", "instance_name", "instance_number", "SID", "instance_hostname"})
+	c.SetDescriptor("processes_simple", "The abap work processes", []string{"no", "typ", "instance_name", "instance_number", "SID", "instance_hostname"})
 
 	return c, nil
 }
@@ -79,9 +79,6 @@ func (c *abaptableServerCollector) recordAbapTable(ch chan<- prometheus.Metric) 
 		labels := append([]string{no, process.Typ, process.Status, process.Reason, process.Start, process.Err, process.Sem,
 			timeToSeconds(process.Cpu),
 			pid, process.Program, process.Client, process.User, process.Action, process.Table}, commonLabels...)
-
-		// label的变化会导致 指标的变化， 所以需要单独增加一条简化的指标，删除一些会变化的字段
-		labels_simple := append([]string{no, process.Typ, pid}, commonLabels...)
 
 		floatValue, err := strconv.ParseFloat(process.Time, 64)
 		if err != nil {
@@ -121,6 +118,9 @@ func (c *abaptableServerCollector) recordAbapTable(ch chan<- prometheus.Metric) 
 			ch <- c.MakeCounterMetric("processes_up2", floatValue, labels...)
 		default:
 		}
+		// label的变化会导致 指标的变化， 所以需要单独增加一条简化的指标，删除一些会变化的字段
+		labels_simple := append([]string{no, process.Typ}, commonLabels...)
+
 		ch <- c.MakeCounterMetric("processes_simple", floatValue, labels_simple...)
 
 	}
