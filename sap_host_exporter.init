@@ -25,7 +25,7 @@
 # First reset status of this service
 rc_reset
 
-PROG=/opt/exporter/sap_host_exporter/sap_host_exporter-amd64
+PROG=/opt/exporter/sap_host_exporter/sap_host_exporter
 CONFIG=/opt/exporter/sap_host_exporter/default.yaml
 PIDFILE=/var/run/sap_host_exporter.pid
 
