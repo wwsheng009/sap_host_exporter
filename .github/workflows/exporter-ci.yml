@@ -48,15 +48,12 @@ jobs:
     - name: compress
       run: |
         set -x
-        for FILE in build/bin/*; do
-          if [ -f "$FILE" ]; then
-            gzip "$FILE"
-          fi
-        done
+        cd build/bin
+        tar -czf sap_host_exporter_bundle.tar.gz *
     - uses: actions/upload-artifact@v4
       with:
         name: sap_host_exporter
-        path: build/bin
+        path: build/bin/*.gz
 
   obs-commit:
     needs: build
@@ -129,5 +126,5 @@ jobs:
         name: sap_host_exporter
     - uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'sap_host_exporter-*'
+        files: '*.gz'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
