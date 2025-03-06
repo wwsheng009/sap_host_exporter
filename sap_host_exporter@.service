@@ -6,7 +6,7 @@ Documentation=https://github.com/SUSE/sap_host_exporter
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/bin/sap_host_exporter --config /etc/sap_host_exporter/%i.yaml
+ExecStart=/opt/exporter/sap_host_exporter/sap_host_exporter-amd64 --config /opt/exporter/sap_host_exporter/default.yaml
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]

@@ -39,11 +39,19 @@ jobs:
       run: make test
     - name: build
       run: make -j4 build-all
+    - name: prepare configs
+      run: |
+        mkdir -p build/bin
+        cp sap_host_exporter.init build/bin/
+        cp sap_host_exporter.yaml build/bin/default.yaml
+        cp sap_host_exporter@.service build/bin/
     - name: compress
       run: |
         set -x
         for FILE in build/bin/*; do
-          gzip $FILE
+          if [ -f "$FILE" ]; then
+            gzip "$FILE"
+          fi
         done
     - uses: actions/upload-artifact@v4
       with:
