@@ -123,5 +123,5 @@ jobs:
           name: sap_host_exporter
       - uses: softprops/action-gh-release@v1
         with:
-          files: 'build/bin/*.gz'
+          files: '*.gz'
           token: ${{ secrets.GITHUB_TOKEN }}
