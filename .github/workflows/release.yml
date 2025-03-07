@@ -1,4 +1,4 @@
-name: Exporter CI
+name: release CI
 
 # this workflow will
 # - check build and test the go codebase on every pull request
@@ -7,20 +7,20 @@ name: Exporter CI
 # - attach build artifacts to GitHub releases
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "dashboards/**"
-      - "packaging/obs/grafana-sap-netweaver-dashboards/**"
-      - ".github/workflows/dashboards*"
-  pull_request:
-    paths-ignore:
-      - "dashboards/**"
-      - "packaging/obs/grafana-sap-netweaver-dashboards/**"
-      - ".github/workflows/dashboards*"
+  # push:
+  #   branches: [main]
+  #   paths-ignore:
+  #     - "dashboards/**"
+  #     - "packaging/obs/grafana-sap-netweaver-dashboards/**"
+  #     - ".github/workflows/dashboards*"
+  # pull_request:
+  #   paths-ignore:
+  #     - "dashboards/**"
+  #     - "packaging/obs/grafana-sap-netweaver-dashboards/**"
+  #     - ".github/workflows/dashboards*"
   workflow_dispatch:
-  # release:
-  #   types: [published]
+  release:
+    types: [published]
 
 jobs:
   build:
@@ -39,16 +39,26 @@ jobs:
         run: make test
       - name: build
         run: make -j4 build-all
+      - name: prepare configs
+        run: |
+          mkdir -p build/bin
+          cp sap_host_exporter.init build/bin/
+          cp sap_host_exporter.yaml build/bin/default.yaml
+          cp sap_host_exporter@.service build/bin/
       - name: compress
         run: |
           set -x
-          for FILE in build/bin/*; do
-            gzip $FILE
+          cd build/bin
+          for arch in amd64 arm64 ppc64le s390x; do
+            mkdir -p $arch
+            cp default.yaml sap_host_exporter.init sap_host_exporter@.service $arch/
+            cp sap_host_exporter-$arch $arch/sap_host_exporter
+            tar -czf sap_host_exporter_${arch}.tar.gz -C $arch .
           done
       - uses: actions/upload-artifact@v4
         with:
           name: sap_host_exporter
-          path: build/bin
+          path: build/bin/*.gz
 
   obs-commit:
     needs: build
@@ -113,5 +123,5 @@ jobs:
           name: sap_host_exporter
       - uses: softprops/action-gh-release@v1
         with:
-          files: "sap_host_exporter-*"
+          files: 'build/bin/*.gz'
           token: ${{ secrets.GITHUB_TOKEN }}
