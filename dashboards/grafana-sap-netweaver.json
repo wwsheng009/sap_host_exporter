@@ -292,7 +292,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_start_service_instances{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_start_service_instances{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -537,7 +537,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_start_service_processes{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_start_service_processes{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -715,7 +715,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 1)",
+          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 1)",
           "legendFormat": "GRAY",
           "refId": "A"
         },
@@ -724,7 +724,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 2)",
+          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 2)",
           "legendFormat": "GREEN",
           "refId": "B"
         },
@@ -733,7 +733,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 3)",
+          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 3)",
           "legendFormat": "YELLOW",
           "refId": "C"
         },
@@ -742,7 +742,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 4)",
+          "expr": "count(sap_start_service_instances{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 4)",
           "legendFormat": "RED",
           "refId": "D"
         }
@@ -900,7 +900,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 1)",
+          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 1)",
           "interval": "",
           "legendFormat": "GRAY",
           "refId": "A"
@@ -910,7 +910,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 2)",
+          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 2)",
           "legendFormat": "GREEN",
           "refId": "B"
         },
@@ -919,7 +919,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 3)",
+          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 3)",
           "legendFormat": "YELLOW",
           "refId": "C"
         },
@@ -928,7 +928,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"} == 4)",
+          "expr": "count(sap_start_service_processes{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"} == 4)",
           "legendFormat": "RED",
           "refId": "D"
         }
@@ -1039,7 +1039,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_enqueue_server_locks_now{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_enqueue_server_locks_now{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "legendFormat": "Locks",
           "refId": "A"
         },
@@ -1048,7 +1048,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_enqueue_server_owner_now{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_enqueue_server_owner_now{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "legendFormat": "Lock owners",
           "refId": "C"
         },
@@ -1057,7 +1057,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_enqueue_server_arguments_now{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_enqueue_server_arguments_now{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "legendFormat": "Lock arguments",
           "refId": "B"
         }
@@ -1154,7 +1154,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_enqueue_requests{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_enqueue_requests{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "Lock",
           "refId": "A"
         },
@@ -1163,7 +1163,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_enqueue_rejects{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_enqueue_rejects{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "Rejected",
           "refId": "B"
         },
@@ -1172,7 +1172,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_dequeue_requests{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_dequeue_requests{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "Release",
           "refId": "C"
         },
@@ -1181,7 +1181,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_dequeue_all_requests{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_dequeue_all_requests{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "LUW release",
           "refId": "D"
         },
@@ -1190,7 +1190,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_cleanup_requests{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_cleanup_requests{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "Server release",
           "refId": "E"
         }
@@ -1318,7 +1318,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_enqueue_errors{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_enqueue_errors{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "Lock",
           "refId": "A"
         },
@@ -1327,7 +1327,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_enqueue_server_dequeue_errors{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_enqueue_server_dequeue_errors{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "Release",
           "refId": "B"
         }
@@ -1438,7 +1438,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_dispatcher_queue_now{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_dispatcher_queue_now{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "legendFormat": "{{type}} {{instance_name}}",
           "refId": "A"
         }
@@ -1516,7 +1516,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_dispatcher_queue_high{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_dispatcher_queue_high{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "instant": true,
           "legendFormat": "{{type}} {{instance_name}}",
           "refId": "A"
@@ -1594,7 +1594,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "sap_dispatcher_queue_max{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}",
+          "expr": "sap_dispatcher_queue_max{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}",
           "instant": true,
           "legendFormat": "{{type}} {{instance_name}}",
           "refId": "A"
@@ -1691,7 +1691,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_dispatcher_queue_reads{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_dispatcher_queue_reads{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "{{type}} {{instance_name}}",
           "refId": "A"
         }
@@ -1787,7 +1787,7 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
-          "expr": "rate(sap_dispatcher_queue_writes{instance_name=~\"$instance_name\", SID=\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
+          "expr": "rate(sap_dispatcher_queue_writes{instance_name=~\"$instance_name\", SID=~\"$SID\", instance_hostname=\"$instance_hostname\"}[5m])",
           "legendFormat": "{{type}} {{instance_name}}",
           "refId": "A"
         }
@@ -1841,16 +1841,23 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(sap_start_service_processes, SID)",
         "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "SID",
-        "multi": false,
+        "multi": true,
         "name": "SID",
         "options": [],
         "query": "label_values(sap_start_service_processes, SID)",

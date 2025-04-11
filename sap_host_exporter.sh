@@ -13,23 +13,47 @@ check_sap_instances() {
     declare -g -A instance_map
     declare -g -A instance_number_map
 
-    # 检查32xx端口并提取实例信息
-    while read -r line; do
-        if [[ $line =~ 320([0-9])[[:space:]].*LISTEN[[:space:]]+([0-9]+)/(.+) ]]; then
-            # 确保实例号是两位数，如果是个位数则在前面补0
-            local original_instance_number=$(printf "%02d" "${BASH_REMATCH[1]}")
-            local process_name=${BASH_REMATCH[3]}
-            instance_map[$original_instance_number]=$process_name
-            instance_number_map[$original_instance_number]=$original_instance_number
-            echo "找到实例: $original_instance_number -> $process_name"
-        fi
-    done <<< "$netstat_output"
+    # 调整逻辑
+    # 执行命令：ps ax | grep sapstartsrv
+    # ed1adm    1375  0.0  0.2 1254152 67164 ?       Ssl  Mar16   3:46 /usr/sap/ED1/D00/exe/sapstartsrv pf=/usr/sap/ED1/SYS/profile/ED1_D00_ERPDEV01
+    # ed1adm    1376  0.0  0.3 1020588 100788 ?      Ssl  Mar16   4:34 /usr/sap/ED1/ASCS01/exe/sapstartsrv pf=/usr/sap/ED1/SYS/profile/ED1_ASCS01_ERPDEV01
+    # sapadm    4880  0.0  0.5 1790852 181564 ?      Ssl  Mar16  23:26 /usr/sap/hostctrl/exe/sapstartsrv pf=/usr/sap/hostctrl/exe/host_profile -D
 
-    # 检查5xx13端口
-    if ! echo "$netstat_output" | grep -E ":[0-9]+13.*LISTEN.*sapstartsrv" > /dev/null; then
-        echo "错误：未检测到sapstartsrv的5xx13端口监听"
-        return 1
-    fi
+    # 读取pf参数文件中的配置并提取相关信息。
+    # SAPSYSTEMNAME = ED1
+    # SAPSYSTEM = 00 作为端口号
+    # INSTANCE_NAME = D00
+    # 打开参数文件pf=后面的文件，读取文件，并根据sapsystem配置提取端口号：SAPSYSTEM = 00
+    # 在netstat_output中检查5xx13端口是否存在，如果存在才会进行实例映射，
+    # 如果端口存在，使用SAPSYSTEMNAME_INSTANCE_NAME 作为process_name
+
+    # 获取sapstartsrv进程信息
+    local sapstartsrv_procs=$(ps ax | grep 'sapstartsrv')
+
+    # 解析每个sapstartsrv进程
+    while read -r proc_line; do
+        # 提取pf参数路径
+        if [[ $proc_line =~ pf=([^[:space:]]+) ]]; then
+            local pf_path=${BASH_REMATCH[1]}
+            # echo "找到pf参数文件: $pf_path"
+            # 读取pf文件内容
+            if [ -f "$pf_path" ]; then
+                local sapsystemname=$(grep -E '^SAPSYSTEMNAME\s*=' "$pf_path" | sed -E 's/^[^=]*=\s*//')
+                local sapsystem=$(grep -E '^SAPSYSTEM\s*=' "$pf_path" | sed -E 's/^[^=]*=\s*//')
+                local instance_name=$(grep -E '^INSTANCE_NAME\s*=' "$pf_path" | sed -E 's/^[^=]*=\s*//')
+                
+                # 生成实例ID
+                local instance_id="${sapsystemname}_${instance_name}"
+                # echo "找到实例配置: $instance_id 端口：${sapsystem}"
+                # 检查5xx13端口
+                if echo "$netstat_output" | grep -E ":5${sapsystem}13.*LISTEN" > /dev/null; then
+                    instance_map["$sapsystem"]="$instance_id"
+                    instance_number_map["$sapsystem"]="$sapsystem"
+                    echo "找到实例端口: $sapsystem -> $instance_id"
+                fi
+            fi
+        fi
+    done <<< "$sapstartsrv_procs"
 
     # 检查是否找到任何实例
     if [ ${#instance_map[@]} -eq 0 ]; then
@@ -93,7 +117,7 @@ install() {
     # 复制配置文件并修改
     for instance_number in "${!instance_map[@]}"; do
         instance_id=${instance_map[$instance_number]}
-        mapped_number=$(printf "%02d" "${instance_number_map[$instance_number]}")
+        mapped_number=$(printf "%02d" "${instance_number}")
         echo "实例号: ${instance_number}, 进程名: ${instance_id}"
         # 复制配置文件
         cp default.yaml "${instance_id}.yaml"
@@ -225,13 +249,16 @@ update_categraf_config() {
     echo "[[instances]]" >> "$config_file"
     echo "urls = [" >> "$config_file"
     # 遍历实例映射数组，获取每个实例的端口号并生成对应的URL
-    for instance_number in "${!instance_map[@]}"; do
+    # 获取有序的实例键数组
+    local instance_numbers=("${!instance_map[@]}")
+    for index in "${!instance_numbers[@]}"; do
+        instance_number="${instance_numbers[$index]}"
         mapped_number=$(printf "%02d" "${instance_number_map[$instance_number]}")
-        if [ "${instance_number}" = "${!instance_map[@]: -1}" ]; then
-            # 如果是最后一个实例，不添加逗号
+        
+        # 通过索引判断最后一个元素
+        if [ $index -eq $(( ${#instance_numbers[@]} - 1 )) ]; then
             echo "    \"http://localhost:97${mapped_number}/metrics\"" >> "$config_file"
         else
-            # 不是最后一个实例，添加逗号
             echo "    \"http://localhost:97${mapped_number}/metrics\"," >> "$config_file"
         fi
     done
