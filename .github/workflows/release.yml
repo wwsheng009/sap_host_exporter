@@ -43,6 +43,7 @@ jobs:
         run: |
           mkdir -p build/bin
           cp sap_host_exporter.init build/bin/
+          cp sap_host_exporter.sh build/bin/
           cp sap_host_exporter.yaml build/bin/default.yaml
           cp sap_host_exporter@.service build/bin/
       - name: compress
