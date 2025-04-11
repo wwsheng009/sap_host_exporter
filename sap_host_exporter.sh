@@ -7,7 +7,7 @@ VERSION="sap_host_exporter_amd64.tar.gz"
 check_sap_instances() {
     # 提取SAP中的进程信息
     # 创建临时文件存储netstat输出
-    local netstat_output=$(netstat -tlnp)
+    local ss_output=$(ss -tuln)
 
     # 初始化实例映射数组
     declare -g -A instance_map
@@ -46,7 +46,7 @@ check_sap_instances() {
                 local instance_id="${sapsystemname}_${instance_name}"
                 # echo "找到实例配置: $instance_id 端口：${sapsystem}"
                 # 检查5xx13端口
-                if echo "$netstat_output" | grep -E ":5${sapsystem}13.*LISTEN" > /dev/null; then
+                if echo "$ss_output" | grep -E ":5${sapsystem}13" > /dev/null; then
                     instance_map["$sapsystem"]="$instance_id"
                     instance_number_map["$sapsystem"]="$sapsystem"
                     echo "找到实例端口: $sapsystem -> $instance_id"
