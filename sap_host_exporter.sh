@@ -224,9 +224,16 @@ update_categraf_config() {
     echo >> "$config_file"
     echo "[[instances]]" >> "$config_file"
     echo "urls = [" >> "$config_file"
+    # 遍历实例映射数组，获取每个实例的端口号并生成对应的URL
     for instance_number in "${!instance_map[@]}"; do
         mapped_number=$(printf "%02d" "${instance_number_map[$instance_number]}")
-        echo "    \"http://localhost:97${mapped_number}/metrics\"" >> "$config_file"
+        if [ "${instance_number}" = "${!instance_map[@]: -1}" ]; then
+            # 如果是最后一个实例，不添加逗号
+            echo "    \"http://localhost:97${mapped_number}/metrics\"" >> "$config_file"
+        else
+            # 不是最后一个实例，添加逗号
+            echo "    \"http://localhost:97${mapped_number}/metrics\"," >> "$config_file"
+        fi
     done
     echo "]" >> "$config_file"
     
