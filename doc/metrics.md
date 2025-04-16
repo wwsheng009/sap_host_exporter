@@ -505,6 +505,126 @@ sap_dispatcher_queue_reads{type="ABAP/UPD"} 3746
 sap_dispatcher_queue_reads{type="ICM/Intern"} 37426
 ```
 
+### `sap_abap_work_processes_btc`
+
+后台作业的工作时间。
+
+#### Labels
+
+- `SID`: 系统 ID
+- `instance_name`: 实例名称
+- `instance_number`: 实例编号
+- `no`: 工作进程编号
+- `pid`: 工作进程 PID
+- `typ`: 工作进程类型
+- `status`: 工作进程状态
+- `start`: 工作进程是否已启动
+- `action`: 工作进程动作
+- `table`: 工作进程表
+- `client`: 工作进程客户端
+- `program`: 工作进程程序
+- `user`: 工作进程用户
+- `cpu`: 工作进程 CPU 时间
+- `reason`: 工作进程原因
+- `sem`: 工作进程信号量
+- `err`: 工作进程错误
+- `instance_hostname`: 实例主机名
+
+#### Example
+
+```
+sap_abap_work_processes_btc{SID="EP1",action="",client="",cpu="1254",err="",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="36",pid="6542",program="",reason="",sem="",start="yes",status="Wait",table="",typ="BTC",user=""} 0
+sap_abap_work_processes_btc{SID="EP1",action="",client="",cpu="1295",err="",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="38",pid="4782",program="",reason="",sem="",start="yes",status="Wait",table="",typ="BTC",user=""} 0
+```
+
+### `sap_abap_work_processes_dia`
+
+对话进程工作时间。
+
+#### Labels
+
+#### Example
+
+```
+sap_abap_work_processes_dia{SID="EP1",action="",client="",cpu="10175",err="",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="13",pid="11825",program="",reason="",sem="",start="yes",status="Wait",table="",typ="DIA",user=""} 0
+
+```
+
+### `sap_abap_work_processes_spo`
+
+打印进程工作时间。
+
+#### Labels
+
+#### Example
+
+```
+sap_abap_work_processes_spo{SID="EP1",action="",client="",cpu="139",err="",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="46",pid="4790",program="",reason="",sem="",start="yes",status="Wait",table="",typ="SPO",user=""} 0
+```
+
+### `sap_abap_work_processes_up2`
+
+后台更新进工作时间。
+
+#### Labels
+
+#### Example
+
+```
+sap_abap_work_processes_up2{SID="EP1",action="",client="",cpu="14323",err="",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="47",pid="4791",program="",reason="",sem="",start="yes",status="Wait",table="",typ="UP2",user=""} 0
+```
+
+### `sap_abap_work_processes_upd`
+
+后台更新进程工作时间。
+#### Labels
+
+#### Example
+
+```
+sap_abap_work_processes_upd{SID="EP1",action="",client="",cpu="20457",err="",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="30",pid="4774",program="",reason="",sem="",start="yes",status="Wait",table="",typ="UPD",user=""} 0
+```
+
+### `sap_abap_work_processes_wait_pct`
+
+后台工作进程等待百分比，100% 表示所有工作进程都在等待。
+
+#### Labels
+- `typ`: 工作进程类型
+- `SID`: 系统 ID
+- `instance_name`: 实例名称
+- `instance_number`: 实例编号
+- `instance_hostname`: 实例主机名
+
+
+#### Example
+
+```
+sap_abap_work_processes_wait_pct{SID="EP1",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",typ="ABAP/BTC"} 100
+sap_abap_work_processes_wait_pct{SID="EP1",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",typ="ABAP/DIA"} 100
+sap_abap_work_processes_wait_pct{SID="EP1",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",typ="ABAP/SPO"} 100
+sap_abap_work_processes_wait_pct{SID="EP1",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",typ="ABAP/UP2"} 100
+sap_abap_work_processes_wait_pct{SID="EP1",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",typ="ABAP/UPD"} 100
+```
+
+### `sap_abap_work_processes_simple`
+
+后台工作进程信息，剔除了一些无用的信息，值是进程工作时间。
+
+#### Labels
+
+- `typ`: 工作进程类型
+- `SID`: 系统 ID
+- `instance_name`: 实例名称
+- `instance_number`: 实例编号
+- `instance_hostname`: 实例主机名
+- `no`: 工作进程编号
+
+#### Example
+
+```
+sap_abap_work_processes_simple{SID="EP1",instance_hostname="ERPPRD01",instance_name="D00",instance_number="0",no="1",typ="DIA"} 0
+```
 
 ## Appendix
 
