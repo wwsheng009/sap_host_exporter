@@ -10,10 +10,11 @@ import (
 	"github.com/pkg/errors"
 	"github.com/prometheus/client_golang/prometheus"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 // RegisterOptionalCollectors register depending on the system where the exporter run the additional collectors
-func RegisterOptionalCollectors(webService sapcontrol.WebService) error {
+func RegisterOptionalCollectors(webService sapcontrol.WebService, config *viper.Viper) error {
 	enqueueFound := false
 	dispatcherFound := false
 	abaptableFound := false
@@ -37,7 +38,9 @@ func RegisterOptionalCollectors(webService sapcontrol.WebService) error {
 		}
 	}
 	// if we found msg_server on process name we register the Enqueue Server
-	if enqueueFound {
+	// and if collect-enqueue-server is enabled in config (default: true)
+	collectEnqueueServer := config.GetBool("collect-enqueue-server")
+	if enqueueFound && collectEnqueueServer {
 		enqueueServerCollector, err := enqueue_server.NewCollector(webService)
 		if err != nil {
 			return errors.Wrap(err, "error registering Enqueue Server collector")
@@ -45,6 +48,8 @@ func RegisterOptionalCollectors(webService sapcontrol.WebService) error {
 			prometheus.MustRegister(enqueueServerCollector)
 			log.Info("Enqueue Server optional collector registered")
 		}
+	} else if enqueueFound && !collectEnqueueServer {
+		log.Info("Enqueue Server collector disabled by configuration")
 	}
 	// if we found disp+work on process name we register the dispatcher collector
 	if dispatcherFound {

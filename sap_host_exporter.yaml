@@ -34,3 +34,9 @@ sap-control-password: ""
 # If this is specified, sap-control-url setting will be ignored.
 # UDS connection doesn't require authentication
 sap-control-uds: ""
+
+# Enable or disable the Enqueue Server collector.
+#
+# Set to false if you don't want to collect Enqueue Server metrics (e.g., on non-ASCS instances).
+# Default: true
+collect-enqueue-server: true

@@ -8,6 +8,7 @@ import (
 	"github.com/SUSE/sap_host_exporter/lib/sapcontrol"
 	"github.com/SUSE/sap_host_exporter/test/mock_sapcontrol"
 	"github.com/golang/mock/gomock"
+	"github.com/spf13/viper"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
@@ -19,6 +20,12 @@ func captureOutput(f func()) string {
 	f()
 	log.SetOutput(os.Stderr)
 	return buf.String()
+}
+
+func newTestConfig() *viper.Viper {
+	config := viper.New()
+	config.Set("collect-enqueue-server", true)
+	return config
 }
 
 func TestActivationDispatcherOutput(t *testing.T) {
@@ -61,7 +68,7 @@ func TestActivationDispatcherOutput(t *testing.T) {
 	}, nil)
 
 	output := captureOutput(func() {
-		RegisterOptionalCollectors(mockWebService)
+		RegisterOptionalCollectors(mockWebService, newTestConfig())
 	})
 	assert.Contains(t, output, "Dispatcher optional collector registered")
 }
@@ -106,7 +113,7 @@ func TestActivationEnqueueServerOutput(t *testing.T) {
 	}, nil)
 
 	output := captureOutput(func() {
-		RegisterOptionalCollectors(mockWebService)
+		RegisterOptionalCollectors(mockWebService, newTestConfig())
 	})
 	assert.Contains(t, output, "Enqueue Server optional collector registered")
 
@@ -142,7 +149,7 @@ func TestNoActivation(t *testing.T) {
 	}, nil)
 
 	output := captureOutput(func() {
-		RegisterOptionalCollectors(mockWebService)
+		RegisterOptionalCollectors(mockWebService, newTestConfig())
 	})
 	assert.NotContains(t, output, "Enqueue Server optional collector registered")
 	assert.NotContains(t, output, "Dispatcher optional collector registered")

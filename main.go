@@ -36,6 +36,7 @@ func init() {
 	flag.String("sap-control-url", "localhost:50013", "The URL of the SAPControl SOAP web service, e.g. $HOST:$PORT")
 	flag.String("sap-control-uds", "", "The path to the SAPControl Unix Domain Socket. If set, this will be used instead of the URL.")
 	flag.StringP("config", "c", "", "The path to a custom configuration file. NOTE: it must be in yaml format.")
+	flag.Bool("collect-enqueue-server", true, "Enable the Enqueue Server collector")
 	flag.CommandLine.SortFlags = false
 
 	helpFlag = flag.BoolP("help", "h", false, "show this help message")
@@ -80,7 +81,7 @@ func run() {
 		log.Info("Start Service collector registered")
 	}
 
-	err = registry.RegisterOptionalCollectors(webService)
+	err = registry.RegisterOptionalCollectors(webService, globalConfig)
 	if err != nil {
 		log.Fatal(err)
 	}
